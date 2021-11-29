@@ -1,3 +1,5 @@
+streamlit run test_app copy.py
+
 import pandas as pd
 
 df = pd.read_excel('/Users/foxjap/Downloads/RC_F01_01_2019_T26_11_2021.xlsx', 0, header=0, index_col=None, na_values=["NA"])
