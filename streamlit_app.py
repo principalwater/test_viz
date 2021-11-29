@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_excel('/Users/foxjap/Downloads/RC_F01_01_2019_T26_11_2021.xlsx', 0, header=0, index_col=None, na_values=["NA"])
+df = pd.read_excel('https://www.cbr.ru/Queries/UniDbQuery/DownloadExcel/14315?Posted=True&From=01.01.2019&To=26.11.2021&FromDate=01%2F01%2F2019&ToDate=11%2F26%2F2021', 0, header=0, index_col=None, na_values=["NA"])
 
 print('Import from database success!')
 
