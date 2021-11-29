@@ -1,4 +1,6 @@
+import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 df = pd.read_excel('https://www.cbr.ru/Queries/UniDbQuery/DownloadExcel/14315?Posted=True&From=01.01.2019&To=26.11.2021&FromDate=01%2F01%2F2019&ToDate=11%2F26%2F2021', 0, header=0, index_col=None, na_values=["NA"])
 
@@ -9,40 +11,8 @@ df['year'] = pd.DatetimeIndex(df['DT']).year
 #df['vol'] = df['vol'].dropna
 #display(df)
 
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-from dash.dependencies import Input, Output
-import plotly.express as px
+fig = px.histogram(df, x="vol", y="ruo", color="year",
+                   marginal="box", # or violin, rug
+                   hover_data=df.columns)
 
-animations = {
-    'Scatter': px.scatter(
-        df, x="vol", y="ruo", animation_frame="month", 
-        animation_group="year", size="ruo", color="vol", 
-        hover_name="year", log_x=True, size_max=55, 
-        range_x=[20,400], range_y=[2,10]),
-    'Bar': px.bar(
-        df, x="vol", y="ruo", color="vol", 
-        animation_frame="month", animation_group="month", 
-        range_x=[20,400], range_y=[2,10]),
-}
-
-app = dash.Dash(__name__)
-
-app.layout = html.Div([
-    html.P("Select an animation:"),
-    dcc.RadioItems(
-        id='selection',
-        options=[{'label': x, 'value': x} for x in animations],
-        value='Scatter'
-    ),
-    dcc.Graph(id="graph"),
-])
-
-@app.callback(
-    Output("graph", "figure"), 
-    [Input("selection", "value")])
-def display_animated_graph(s):
-    return animations[s]
-
-app.run_server(debug=True)
+st.plotly_chart(fig, use_container_width=True)
